@@ -1,0 +1,70 @@
+require 'net/http'
+require 'net/https'
+require 'json'
+
+module BabyTime
+  module Interface
+    class Base
+      def initialize(client)
+        @client = client
+      end
+      
+      #http://www.rubyinside.com/nethttp-cheat-sheet-2940.html
+      def uri(path,param={},use_ssl)
+        protocol = use_ssl ? "https://" : "http://"
+        u = URI protocol << @client.site
+        u.port = @client.port.to_i if @client.port.present?
+        u.path = path
+        u.query = param.to_param
+        u
+      end
+
+      def get(path, param = {}, use_ssl = false)
+        u = uri(path, param)
+        http = Net::HTTP.new(u.host, u.port)
+        request = Net::HTTP::Get.new(u.request_uri)
+        
+        if use_ssl
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
+
+        #response = Net::HTTP.get uri(path, param) #can only return some string    
+        response = http.request(request)
+        
+        begin
+          response.header.value
+          JSON.parse response.body
+        rescue => e
+          {error: e.message}
+        end
+      end
+      
+      #c.test.post("/account/login",{},data ={username: "xxxxxxxxxxxxx",sina_token: "xxxxxxxxxxxxxx"}, use_ssl = true)
+      #c.test.post("/account/login",{},data ={username: "xxxxx@xxx.xxx",sina_token: "xxxxxxxxxx"}, use_ssl = true)
+      def post(path, param = {}, data={}, use_ssl = false)
+        u = uri(path, param, use_ssl)
+        http = Net::HTTP.new(u.host, u.port)
+        
+        request = Net::HTTP::Post.new(u.request_uri)
+
+        request.set_form_data data
+
+        if use_ssl
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE #not work
+        end
+
+        #response = Net::HTTP.post_form(uri(path, param), data) #can only return some string  
+        response = http.request(request)
+        
+        begin
+          response.header.value
+          JSON.parse response.body
+        rescue => e
+          {error: e.message}
+        end
+      end
+    end
+  end
+end

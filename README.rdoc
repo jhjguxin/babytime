@@ -1,0 +1,21 @@
+= Weibo2
+
+A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/babytime].
+
+== Installation
+
+  gem install babytime
+  
+== Usage Examples
+
+  more info see sprec test
+
+
+== API
+
+  #TODO
+  
+  
+== Copyright
+
+Copyright (c) 2011 Francis.J. See LICENSE for details.

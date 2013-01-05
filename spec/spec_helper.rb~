@@ -1,0 +1,10 @@
+require 'rspec'
+
+RSpec.configure do |c|
+  c.mock_with :rspec
+end
+
+require 'babytime'
+require 'addressable/uri'
+require 'rspec'
+require 'rspec/autorun'
