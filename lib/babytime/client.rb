@@ -25,6 +25,50 @@ module BabyTime
     def account
       @account ||= BabyTime::Interface::Account.new(self)
     end
+
+    def user
+      @user ||= BabyTime::Interface::User.new(self)
+    end
+
+    def content
+      @content ||= BabyTime::Interface::Content.new(self)
+    end
+    
+    def comment
+      @comment ||= BabyTime::Interface::Comment.new(self)
+    end
+    
+    def favorite
+      @favorite ||= BabyTime::Interface::Favorite.new(self)
+    end
+    
+    def friendship
+      @friendship ||= BabyTime::Interface::Friendship.new(self)
+    end
+    
+    def suggestion
+      @suggestion ||= BabyTime::Interface::Suggestion.new(self)
+    end
+    
+    def search
+      @search ||= BabyTime::Interface::Search.new(self)
+    end
+
+    def tips
+      @tips ||= BabyTime::Interface::Tips.new(self)
+    end
+    
+    def statistics
+      @statistics ||= BabyTime::Interface::Statistics.new(self)
+    end
+    
+    def knowledge
+      @knowledge ||= BabyTime::Interface::Knowledge.new(self)
+    end
+    
+    def monitor
+      @monitor ||= BabyTime::Interface::Monitor.new(self)
+    end
     
     def test
       @test ||= BabyTime::Interface::Test.new(self)
