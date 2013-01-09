@@ -1,3 +1,4 @@
+require 'active_support/all'
 require 'babytime/client'
 require 'babytime/version'
 require 'babytime/interface/base'

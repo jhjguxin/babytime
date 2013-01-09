@@ -1,6 +1,6 @@
 = Weibo2
 
-A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/BabyTime].
+A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/babytime].
 
 == Installation
 
@@ -15,7 +15,11 @@ A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/BabyTime].
 
   #TODO
   
-  
+== for Developer
+
+  $:.push File.expand_path("../lib", __FILE__)
+  require "babytime"
+
 == Copyright
 
 Copyright (c) 2011 Francis.J. See LICENSE for details.

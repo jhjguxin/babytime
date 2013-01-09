@@ -15,7 +15,12 @@ A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/babytime].
 
   #TODO
   
-  
+== for Developer
+
+  $:.push File.expand_path("../lib", __FILE__)
+  require "babytime"
+  require "debugger"
+
 == Copyright
 
 Copyright (c) 2011 Francis.J. See LICENSE for details.
