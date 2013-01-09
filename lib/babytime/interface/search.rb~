@@ -1,0 +1,21 @@
+# encoding: utf-8
+module BabyTime
+  module Interface
+    class Search < Base
+      
+      #uid          true    int
+      #token        true    int
+      #keywords     true    string
+      def feeds(data = {}, params = {})
+        get("/search/feeds", data, params)
+      end
+      
+      #uid          true    int
+      #token        true    int
+      #keywords     true    string
+      def users(data = {}, params = {})
+        get("/search/feeds", data, params)
+      end
+    end
+  end
+end
