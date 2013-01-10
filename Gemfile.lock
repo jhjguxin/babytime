@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     babytime (0.1.8)
-      activeresource (~> 3.2.9)
+      activeresource
 
 GEM
   remote: http://rubygems.org/
@@ -42,5 +42,5 @@ PLATFORMS
 
 DEPENDENCIES
   babytime!
-  debugger (~> 1.2.3)
+  debugger
   rspec

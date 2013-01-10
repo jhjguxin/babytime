@@ -1,0 +1,7 @@
+development:
+  site: "t0.117show.com/"
+production:
+  site: "b0.117show.com/"
+test:
+  site: "t0.117show.com/"
+

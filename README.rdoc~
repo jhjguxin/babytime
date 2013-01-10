@@ -6,6 +6,15 @@ A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/babytime].
 
   gem install babytime
   
+== Initializes BabyTime
+
+  #babytime.rb
+  BabyTimeConfig = YAML.load_file("./spec/support/babytime.yml")["test"].symbolize_keys
+  BabyTime::Config.site = BabyTimeConfig[:site]
+  # if use Rails your can
+  BabyTimeConfig = YAML.load_file("./spec/support/babytime.yml")[Rails.env].symbolize_keys
+  BabyTime::Config.site = BabyTimeConfig[:site]
+  
 == Usage Examples
 
   more info see sprec test
@@ -19,6 +28,7 @@ A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/babytime].
 
   $:.push File.expand_path("../lib", __FILE__)
   require "babytime"
+  require "debugger"
 
 == Copyright
 

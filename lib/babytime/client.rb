@@ -1,7 +1,3 @@
-require 'babytime/interface/base'
-require 'babytime/interface/account'
-require 'babytime/interface/test'
-
 module BabyTime
   class Client
     attr_accessor :token, :site, :port
@@ -16,8 +12,9 @@ module BabyTime
       #self.use_ssl = false
       # must end with '/'
       #self.site = "b0.117show.com/" # for production env
-      self.site = "t0.117show.com/"
+      #self.site = "t0.117show.com/"
       #self.port = "80"
+      self.site = BabyTime::Config.site
       @test_instance_variable = "I'm a instance variable"
       @@test_class_variable = "I'm a class instance variable"
     end
