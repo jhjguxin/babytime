@@ -35,7 +35,7 @@ module BabyTime
       #height       false   float  身高
       #created_at   true    int    创建日期（时间戳）
       def upload_weigheight(data = {}, params = {})
-        post("/statistics/upload_weigheight", data, params)
+        post("/statistics/upload_weigheight", data, params, extra_param = {header: {use_form_data: true}})
       end
     end
   end

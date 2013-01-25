@@ -23,7 +23,7 @@ module BabyTime
       #login(data = {username: "sina_xxxxxxxx",sina_token: "xxxxxxxxxxx"},params = {})
       #username & md5(passwd) => {uid, token}
       def login(data = {}, params = {})
-        post("/account/login", params, data, use_ssl = true)
+        post("/account/login", params, data, extra_param = {use_ssl: true})
       end
       
       #退出登录
@@ -31,7 +31,7 @@ module BabyTime
       #token true string Login时获得
       #end_session(data = {uid: "xxxxxxx",token: "xxxxxxxxxxxx"},params = {})
       def end_session(data = {}, params = {})
-        post("/account/end_session", params, data, use_ssl = true)
+        post("/account/end_session", params, data, extra_param = {use_ssl: true})
       end
       
       
@@ -46,7 +46,7 @@ module BabyTime
       # baby_gender false int         性别，0: girl, 1: boy
       # pic         false binary      用户头像，仅支持JPEG、GIF、PNG格式，图片大小小于5M。
       def register(data = {},params = {})
-        post("/account/register",params,data, use_ssl = true)
+        post("/account/register",params,data, extra_param = {use_ssl: true})
       end
       
       #更新登陆机器信息（Apple push notification token）
@@ -81,7 +81,7 @@ module BabyTime
       #fb_token           false   string 用Facebook登陆：提供token作验证
       #from_uid           true    sint64 登陆账户名
       def confirm_account(data = {},params = {})
-        post("/account/confirm_account",params, data, use_ssl = true)
+        post("/account/confirm_account",params, data, extra_param = {use_ssl: true})
       end
     end
   end

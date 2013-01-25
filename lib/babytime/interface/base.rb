@@ -9,16 +9,27 @@ module BabyTime
         @client = client
       end
       
-      def set_headers(param = {use_gzip: true})
+      def set_headers(param = {use_gzip: true,use_form_data: false, header: {}})
         headers = {
                      "Accept" => "text/html,application/json, text/javascript, */*; q=0.01;q=0.9,*/*;q=0.8", 
                      "Accept-Charset" => "utf-8;q=0.7,*;q=0.3"#,
                      #"Accept-Language" => "en-US,en;q=0.8"
                   }
-        if param.present? and param.delete(:use_gzip)
-          #If initheader doesn’t have the key ‘accept-encoding’, then a value of “gzip;q=1.0,deflate;q=0.6,identity;q=0.3” is used, so that gzip compression is used in preference to deflate compression, which is used in preference to no compression
-          #headers.reverse_merge({"Accept-Encoding" => "gzip,deflate"})
-          headers.merge!({"Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"})
+
+        if param.present?
+          #if param.delete(:use_gzip)
+          #if no use_gzip give will use gzip with default
+          if param[:use_gzip].nil? or param.delete(:use_gzip)
+            #If initheader doesn't have the key 'accept-encoding', then a value of "gzip;q=1.0,deflate;q=0.6,identity;q=0.3" is used, so that gzip compression is used in preference to deflate compression, which is used in preference to no compression
+            #headers.reverse_merge({"Accept-Encoding" => "gzip,deflate"})
+            headers.merge!({"Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"})
+          end
+          if param.delete(:use_form_data)
+            headers.merge!({"Content-type" => "multipart/form-data"})
+          end
+          if (header = param.delete(:header)).present?
+            headers.merge!(header) if header.is_a? Hash
+          end
         end
         headers
       end
@@ -32,11 +43,16 @@ module BabyTime
         u
       end
 
-      def get(path, param = {}, data={}, use_ssl = false)
+      def get(path, param = {}, data={}, extra_param = {use_ssl: false, headers: {use_gzip: true, use_form_data: false, header: {}}})
+
+        use_ssl = extra_param[:use_ssl].nil? ? false : extra_param.delete(:use_ssl)
+        headers = extra_param[:headers].nil? ? {} : extra_param.delete(:headers)
 
         u = uri(path, param, use_ssl)
         http = Net::HTTP.new(u.host, u.port)
-        request = Net::HTTP::Get.new(u.request_uri, set_headers)
+
+        request = Net::HTTP::Get.new(u.request_uri, set_headers(headers))
+
         
         if use_ssl
           http.use_ssl = true
@@ -57,11 +73,16 @@ module BabyTime
       
       #c.test.post("/account/login",{},data ={username: "xxxxxxxxxxxxx",sina_token: "xxxxxxxxxxxxxx"}, use_ssl = true)
       #c.test.post("/account/login",{},data ={username: "xxxxx@xxx.xxx",sina_token: "xxxxxxxxxx"}, use_ssl = true)
-      def post(path, param = {}, data={}, use_ssl = false)
+      def post(path, param = {}, data={}, extra_param = {use_ssl: false, headers: {use_gzip: true, use_form_data: false, header: {}}})
+
+        use_ssl = extra_param[:use_ssl].nil? ? false : extra_param.delete(:use_ssl)
+        headers = extra_param[:headers].nil? ? {} : extra_param.delete(:headers)
+
         u = uri(path, param, use_ssl)
         http = Net::HTTP.new(u.host, u.port)
-        
-        request = Net::HTTP::Post.new(u.request_uri, set_headers)
+       
+        request = Net::HTTP::Post.new(u.request_uri, set_headers(headers))
+
 
         request.set_form_data data
 

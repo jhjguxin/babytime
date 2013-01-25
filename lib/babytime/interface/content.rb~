@@ -10,7 +10,6 @@ module BabyTime
       #count        true   int
       #start_time   false   int
       def user_time_line(data = {}, params = {})
-        debugger
         get("/content/user_time_line", params, data)
       end
       
@@ -53,7 +52,7 @@ module BabyTime
       
       #发微博（图片、文字）
       def upload(data = {},params = {})
-        post("/content/upload", params, data)
+        post("/content/upload", params, data, extra_param = {headers: {use_form_data: true}})
       end
       
       #删除一条微博

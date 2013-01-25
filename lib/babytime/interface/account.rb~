@@ -45,7 +45,6 @@ module BabyTime
       # baby_birth  true  int         宝宝生日(时间戳)
       # baby_gender false int         性别，0: girl, 1: boy
       # pic         false binary      用户头像，仅支持JPEG、GIF、PNG格式，图片大小小于5M。
-      #注册【宝宝】
       def register(data = {},params = {})
         post("/account/register",params,data, use_ssl = true)
       end

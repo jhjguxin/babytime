@@ -15,9 +15,9 @@ module BabyTime
       #HTTPS(modify new_passwd), HTTP(modify other things), POST
       def modify(data = {}, params = {})
         if data.has_key? :old_passwd or data.has_key? "old_passwd"
-          post("/user/modify",params, data, use_ssl = true)
+          post("/user/modify",params, data, extra_param = {use_ssl: true})
         else
-          post("/user/modify",params, data, use_ssl = false)
+          post("/user/modify",params, data, extra_param = {use_ssl: true})
         end
       end
     end
