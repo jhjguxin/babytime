@@ -52,7 +52,7 @@ module BabyTime
       
       #发微博（图片、文字）
       def upload(data = {},params = {})
-        post("/content/upload", params, data, extra_param = {headers: {use_form_data: true}})
+        post("/content/upload", params, data, extra_param = {multipart: true, headers: {use_form_data: true}})
       end
       
       #删除一条微博

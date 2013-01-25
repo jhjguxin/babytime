@@ -1,6 +1,10 @@
 require 'net/http'
 require 'net/https'
 require 'json'
+require "base64"
+require 'tempfile'
+#about base64 encode
+#http://www.ruby-doc.org/stdlib-1.9.3/libdoc/base64/rdoc/Base64.html
 
 module BabyTime
   module Interface
@@ -73,18 +77,35 @@ module BabyTime
       
       #c.test.post("/account/login",{},data ={username: "xxxxxxxxxxxxx",sina_token: "xxxxxxxxxxxxxx"}, use_ssl = true)
       #c.test.post("/account/login",{},data ={username: "xxxxx@xxx.xxx",sina_token: "xxxxxxxxxx"}, use_ssl = true)
-      def post(path, param = {}, data={}, extra_param = {use_ssl: false, headers: {use_gzip: true, use_form_data: false, header: {}}})
+      # when upload a file you should set 'multipart' as true
+      def post(path, param = {}, data={}, extra_param = {use_ssl: false, multipart: false, headers: {use_gzip: true, use_form_data: false, header: {}}})
 
         use_ssl = extra_param[:use_ssl].nil? ? false : extra_param.delete(:use_ssl)
         headers = extra_param[:headers].nil? ? {} : extra_param.delete(:headers)
-
+        multipart = extra_param[:multipart].nil? ? false : extra_param.delete(:multipart)
+        
         u = uri(path, param, use_ssl)
         http = Net::HTTP.new(u.host, u.port)
        
         request = Net::HTTP::Post.new(u.request_uri, set_headers(headers))
 
+        # covert_pic64_to_pic it will work with set_form
+        # set_form # File net/http.rb, line 1796 
+        data = covert_pic64_to_pic(data)
 
-        request.set_form_data data
+##################################################
+#To send multipart/form-data use Net::HTTPGenericRequest#body= and #Net::HTTPHeader#content_type=:
+#   req = Net::HTTP::Post.new(uri.path)
+#   req.body = multipart_data
+#   req.content_type = 'multipart/form-data'
+#   Other requests that can contain a body such as PUT can be created in the same way using the corresponding request class (Net::HTTP::Put).
+#################################
+        if multipart
+          request.set_form(data, enctype='multipart/form-data', formopt={})
+        else
+          # set_form_data Also aliased as: form_data=
+          request.set_form_data data
+        end
 
         if use_ssl
           http.use_ssl = true
@@ -93,6 +114,8 @@ module BabyTime
 
         #response = Net::HTTP.post_form(uri(path, param), data) #can only return some string  
         response = http.request(request)
+        #####
+        #destroy_tmpfile(data[:pic])
         
         begin
           response.header.value
@@ -111,6 +134,30 @@ module BabyTime
           Zlib::GzipReader.new(StringIO.new(body)).read
         else
           body
+        end
+      end
+      def covert_pic64_to_pic(data)
+        if data.has_key? :pic64 and (str = data.delete(:pic64))
+          file = covert_base64_to_file(str)
+          data.merge!({pic: file})
+        else
+          data
+        end
+      end
+      def covert_base64_to_file(str = "")
+        if str.present?
+          binary_str = Base64.decode64(str)
+          #file = File.open("tmp.jpg","wb"){|f| f.write(binary_str)}
+          file = Tempfile.new(['tmp', '.jpg'], :encoding => 'ascii-8bit')
+          file.write(binary_str)
+          file.rewind
+          file
+        end
+      end
+      def destroy_tmpfile(file)
+        if file.present? and file.is_a? Tempfile
+          file.close
+          file.unlink
         end
       end
     end
