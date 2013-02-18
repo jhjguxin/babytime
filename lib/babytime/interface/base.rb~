@@ -29,7 +29,7 @@ module BabyTime
             headers.merge!({"Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"})
           end
           if param.delete(:use_form_data)
-            headers.merge!({"Content-type" => "multipart/form-data"})
+            headers.merge!({"Content-type" => "application/x-www-form-urlencoded"})
           end
           if (header = param.delete(:header)).present?
             headers.merge!(header) if header.is_a? Hash
@@ -78,7 +78,7 @@ module BabyTime
       #c.test.post("/account/login",{},data ={username: "xxxxxxxxxxxxx",sina_token: "xxxxxxxxxxxxxx"}, use_ssl = true)
       #c.test.post("/account/login",{},data ={username: "xxxxx@xxx.xxx",sina_token: "xxxxxxxxxx"}, use_ssl = true)
       # when upload a file you should set 'multipart' as true
-      def post(path, param = {}, data={}, extra_param = {use_ssl: false, multipart: false, headers: {use_gzip: true, use_form_data: false, header: {}}})
+      def post(path, param = {}, data={}, extra_param = {use_ssl: false, multipart: false, headers: {use_gzip: true, use_form_data: true, header: {}}})
 
         use_ssl = extra_param[:use_ssl].nil? ? false : extra_param.delete(:use_ssl)
         headers = extra_param[:headers].nil? ? {} : extra_param.delete(:headers)
@@ -100,7 +100,9 @@ module BabyTime
 #   req.content_type = 'multipart/form-data'
 #   Other requests that can contain a body such as PUT can be created in the same way using the corresponding request class (Net::HTTP::Put).
 #################################
+
         if multipart
+          # enctype is the type to encode the form data set. It is application/x-www-form-urlencoded or multipart/form-data
           request.set_form(data, enctype='multipart/form-data', formopt={})
         else
           # set_form_data Also aliased as: form_data=
