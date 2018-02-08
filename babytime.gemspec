@@ -16,6 +16,6 @@ Gem::Specification.new do |s|
   s.files = Dir["{lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
 
   s.add_dependency "activeresource"
-  s.add_development_dependency "debugger"
+  s.add_development_dependency "byebug"
   s.add_development_dependency "rspec"
 end

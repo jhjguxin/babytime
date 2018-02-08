@@ -4,6 +4,7 @@ RSpec.configure do |c|
   c.mock_with :rspec
 end
 
+require "yaml"
 require 'babytime'
 require 'rspec'
 require 'rspec/autorun'

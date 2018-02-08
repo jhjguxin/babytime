@@ -17,7 +17,7 @@ A Ruby wrapper for BabyTime {babytime}[https://github.com/jhjguxin/babytime].
   
 == Usage Examples
 
-  more info see sprec test
+  more info see spec test
 
 
 == API
